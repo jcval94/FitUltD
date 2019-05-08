@@ -33,7 +33,7 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(FitUltD)
-## FIT1<-FDistUlt(c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19)), plot=TRUE)
+FIT1<-FDistUlt(c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19)), plot=TRUE)
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
