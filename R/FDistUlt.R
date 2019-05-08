@@ -23,7 +23,7 @@
 #' @importFrom ggplot2 is.ggplot
 #'
 #' @examples
-#' X<-c(rnorm(73,189,12),rpois(91,271),rweibull(82,401,87),rgamma(90,40,19))
+#' X<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
 #' #A_X[[1]][[1]]()
 #' #A_X[[2]]
