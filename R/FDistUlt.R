@@ -8,7 +8,7 @@
 #' @param subplot FALSE. If TRUE, generates the plot of the mixed density function's partitions.
 #' @param p.val_min Minimum p.value to be given to non-reject the null hypothesis.
 #'
-#' @return A list with whe density functions, a random sample, a  data frame with p.values results, the corresponding plots an the random numbers generator functions
+#' @return A list with the density functions, a random sample, a  data frame with p.values results, the corresponding plots an the random numbers generator functions
 #' @export
 #'
 #' @importFrom purrr map
