@@ -1,4 +1,4 @@
-#' Fit to a mixed univariate distributions
+#' Fit to a mixed univariate distribution
 #'
 #' @param X A random sample to be fitted.
 #' @param n.obs A positive integer, is the length of the random sample to be generated
@@ -107,12 +107,12 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
     }
   }
   MA<-sample(MA,n.obs)
-  p.v<-cbind(data.frame(Distribucion=Dist[nchar(Dist)!=0],Prop_dist=Len[nchar(Dist)!=0]),PV)
+  p.v<-cbind(data.frame(Distribution=Dist[nchar(Dist)!=0],Dist_Prop=Len[nchar(Dist)!=0]),PV)
   cp<-plt<-c()
   if(plot){
     DF<-rbind(data.frame(A="Fit",DT=MA),
               data.frame(A="Real",DT=X))
-    plt <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.55)+ggplot2::ggtitle("Dist. Original")
+    plt <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.55)+ggplot2::ggtitle("Original Dist.")
     plt
   }
   TPlts<-c()
