@@ -242,5 +242,5 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
               data.frame(A="Real",DT=X))
     p <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.4) +ggplot2::ggtitle(distribu)
   }
-  return(list(distribu,generadora_r,MA,WNR[,2:4],p,list(rfit,pfit,dfit,qfit)))
+  return(list(distribu,generadora_r,MA,WNR[,2:3],p,list(rfit,pfit,dfit,qfit)))
 }
