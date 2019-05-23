@@ -1,5 +1,3 @@
-# FitUltD (development version)
+# FitUltD 3.0.0.9000
 
-## version 3.0.0
-### First changes
-- language in the dataframe
+* Added a `NEWS.md` file to track changes to the package.
