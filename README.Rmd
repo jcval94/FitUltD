@@ -21,19 +21,24 @@ The goal of FitUltD is to fit data that can't be fitted with ordinary density fu
 
 ## Installation
 
-You can install the released version of FitUltD from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of FitUltD from [CRAN](https://CRAN.R-project.org) with: 
 
-``` r
 install.packages("FitUltD")
-```
+
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to fit a multimodal random variable:
 
 ```{r example}
 library(FitUltD)
-FIT1<-FDistUlt(c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19)), plot=TRUE)
+#random Variable
+RV<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
+
+FIT1<-FDistUlt(RV, plot=TRUE)
+
+
+FIT1[[3]]
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
