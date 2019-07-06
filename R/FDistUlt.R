@@ -25,11 +25,18 @@
 #' @examples
 #' X<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
-#' #A_X[[1]][[1]]()
-#' #A_X[[2]]
-#' #A_X[[3]]
-#' #x11();A_X[[4]][[1]]
-#' #x11();A_X[[4]][[2]]
+#'
+#' # Functions generated
+#' A_X[[1]][[1]]()
+#' # Random sample
+#' A_X[[2]]
+#'
+#'
+#' # Plots
+#' x11();A_X[[4]][[1]]
+#' x11();A_X[[4]][[2]]
+#'
+#' # More functions
 #' #A_X[[5]][[1]]()
 #'
 #'
