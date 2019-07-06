@@ -37,8 +37,6 @@ RV<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
 
 FIT1<-FDistUlt(RV, plot=TRUE)
 
-
-FIT1[[3]]
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
@@ -56,4 +54,7 @@ You can also embed plots, for example:
 FIT1[[4]][[1]]
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+```{r plots mult, echo = FALSE}
+FIT1[[4]][[2]]
+```
+
