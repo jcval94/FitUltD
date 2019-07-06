@@ -35,7 +35,7 @@ library(FitUltD)
 #random Variable
 RV<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
 
-FIT1<-FDistUlt(RV, plot=TRUE)
+FIT1<-FDistUlt(RV, plot=TRUE, subplot = TRUE)
 
 ```
 
