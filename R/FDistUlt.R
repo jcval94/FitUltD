@@ -41,8 +41,8 @@
 #'
 #'
 FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.val_min=.05){
-  if(!is.numeric(ref)){}
-  else{ if(ref>length(X)/3){warning("Number of clusters must be less than input length/3")
+  if(!is.numeric(ref)){}else{
+    if(ref>length(X)/3){warning("Number of clusters must be less than input length/3")
     return(NULL)}}
   desc<-function(X,fns=FALSE,ref.=ref,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
     eval<-function(X,fns.=fns,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
@@ -114,7 +114,9 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
     }
   }
   MA<-sample(MA,n.obs)
-  p.v<-cbind(data.frame(Distribution=Dist[nchar(Dist)!=0],Dist_Prop=Len[nchar(Dist)!=0]),PV)
+  pv1<-data.frame(Distribution=Dist[nchar(Dist)!=0],Dist_Prop=Len[nchar(Dist)!=0])
+  p.v<-try(cbind(pv1,PV))
+  if(assertthat::is.error(pv1)){p.v<-pv1}
   cp<-plt<-c()
   if(plot){
     DF<-rbind(data.frame(A="Fit",DT=MA),
