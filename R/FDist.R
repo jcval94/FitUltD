@@ -124,12 +124,14 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
   suppressWarnings(try(aju_R<-purrr::map(DIS_R$Nombres,~fit_b(bt,.x)),silent = TRUE))
   suppressWarnings(try(aju_01<-purrr::map(DIS_01$Nombres,~fit_b(b_01,.x)),silent = TRUE))
   AAA<-list(aju_0,aju_R,aju_01)
-  AAA<-AAA[purrr::map(AAA,~length(.x))!=0]
-  bts<-list(b_0,bt,b_01)
+  descate<-purrr::map(AAA,~length(.x))!=0
+  AAA<-AAA[descate]
+  bts<-list(b_0,bt,b_01)[descate]
   num<-0
   Compe<-data.frame()
   for (aju_ls in 1:length(AAA)) {
     aju<-AAA[[aju_ls]]
+    aju<-aju[purrr::map_lgl(aju,~length(.x)>0)]
     bs<-bts[[aju_ls]]
     for (comp in 1:length(aju)) {
       for (ress in 1:length(aju[[comp]])) {
