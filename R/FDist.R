@@ -42,7 +42,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
   }
   if (length(unique(X))<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
-    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame( AD_p.v=1,KS_p.v=1,Chs_p.v=1),NULL))
+    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame( AD_p.v=1,KS_p.v=1),NULL))
   }
   if(prod(X==floor(X))==1){
     Cont<-FALSE
@@ -54,7 +54,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
     formals(gene)[2]<-1
     formals(gene)[3]<-p
     distribu<-paste0("binom(",p,")")
-    MA=gene()
+    MA=gene(n = gen)
     if(plot){
       DF<-rbind(data.frame(A="Fit",DT=MA),
                 data.frame(A="Real",DT=X))
@@ -62,10 +62,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
     }else{
       pl<-NULL
     }
-    return(list(distribu,gene,MA,data.frame(Dist="binom",AD_p.v=.9,KS_p.v=.9,
-                                            Chs_p.v=.9,
-                                            estimate1=1,estimate2=p,
-                                            estimateLL1=NA,estimateLL2=NA),pl))
+    return(list(distribu,gene,MA[1:gen],data.frame(AD_p.v=.9,KS_p.v=.9),pl))
   }
   DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy"),
             p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy),
