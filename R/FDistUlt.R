@@ -117,7 +117,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   }
   MA<-sample(MA,n.obs)
   pv1<-data.frame(Distribution=Dist[nchar(Dist)!=0],Dist_Prop=Len[nchar(Dist)!=0])
-  p.v<-try(cbind(pv1,PV[,2:3]))
+  p.v<-try(cbind(pv1,PV))
   if(assertthat::is.error(pv1)){p.v<-pv1}
   cp<-plt<-c()
   if(plot){
