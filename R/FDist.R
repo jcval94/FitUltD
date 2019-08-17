@@ -70,7 +70,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
             d=c(stats::dexp,stats::dpois,stats::dbeta,stats::dgamma,stats::dlnorm,stats::dnorm,stats::dweibull,stats::dnbinom,stats::dhyper,stats::dcauchy,stats::dbinom),
             q=c(stats::qexp,stats::qpois,stats::qbeta,stats::qgamma,stats::qlnorm,stats::qnorm,stats::qweibull,stats::qnbinom,stats::qhyper,stats::qcauchy,stats::qbinom),
             r=c(stats::rexp,stats::rpois,stats::rbeta,stats::rgamma,stats::rlnorm,stats::rnorm,stats::rweibull,stats::rnbinom,stats::rhyper,stats::rcauchy,stats::rbinom),
-            d_c=c(1,0,1,1,1,1,1,0,0,1),
+            d_c=c(1,0,1,1,1,1,1,0,0,1,0),
             indicadora=c("0","0","01","0","0","R","0","0","0","R","0")
   )
   DIS<-purrr::map(DIS,~subset(.x, DIS$d_c==as.numeric(Cont)))
