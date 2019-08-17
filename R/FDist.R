@@ -49,10 +49,14 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
   }
   if (length(unique(X))==2) {
     p<-length(X[X==unique(X)[1]])/length(X)
-    Ber<-function(p.=p,n=gen){
-      stats::runif(n) > (1 - p)
+    gene<-rbinom
+    formals(gene)[1]<-length(X)
+    formals(gene)[2]<-1
+    formals(gene)[3]<-p
+    if(plot){
+
     }
-    return(list("Ber",Ber,Ber(p)))
+    return(list(paste0("binom(",p,")"),gene,"",))
   }
   DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy"),
             p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy),
