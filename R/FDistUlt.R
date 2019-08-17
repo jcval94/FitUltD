@@ -80,7 +80,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         formals(FN)[1]<-length(X)
         formals(FN)[2]<-mean(X)
         formals(FN)[3]<-ifelse(length(X)==1,0,sd(X))
-        return(list(paste("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),data.frame(AD_p.v=0,KS_p.v=0,Chs_p.v=0)))
+        return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),data.frame(AD_p.v=0,KS_p.v=0)))
       }
     }else{
       return(EV)
