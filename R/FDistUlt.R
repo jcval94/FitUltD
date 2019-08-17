@@ -80,7 +80,9 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         formals(FN)[1]<-length(X)
         formals(FN)[2]<-mean(X)
         formals(FN)[3]<-ifelse(length(X)==1,0,sd(X))
-        return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),data.frame(AD_p.v=0,KS_p.v=0)))
+        return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),
+                    data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,PV_S=2)
+                    ))
       }
     }else{
       return(EV)
@@ -115,7 +117,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   }
   MA<-sample(MA,n.obs)
   pv1<-data.frame(Distribution=Dist[nchar(Dist)!=0],Dist_Prop=Len[nchar(Dist)!=0])
-  p.v<-try(cbind(pv1,PV))
+  p.v<-try(cbind(pv1,PV[,2:3]))
   if(assertthat::is.error(pv1)){p.v<-pv1}
   cp<-plt<-c()
   if(plot){

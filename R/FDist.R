@@ -42,13 +42,14 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
   }
   if (length(unique(X))<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
-    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame( AD_p.v=1,KS_p.v=1),NULL))
+    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2),NULL))
   }
   if(prod(X==floor(X))==1){
     Cont<-FALSE
   }
   if (length(unique(X))==2) {
-    p<-length(X[X==unique(X)[1]])/length(X)
+    X<-sort(X)
+    p<-length(X[X==unique(X)[2]])/length(X)
     gene<-rbinom
     formals(gene)[1]<-length(X)
     formals(gene)[2]<-1
@@ -62,7 +63,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
     }else{
       pl<-NULL
     }
-    return(list(distribu,gene,MA[1:gen],data.frame(AD_p.v=.9,KS_p.v=.9),pl))
+    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2),pl))
   }
   DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy"),
             p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy),
@@ -252,5 +253,5 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
               data.frame(A="Real",DT=X))
     p <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.4) +ggplot2::ggtitle(distribu)
   }
-  return(list(distribu,generadora_r,MA,WNR[,2:3],p,list(rfit,pfit,dfit,qfit)))
+  return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit)))
 }
