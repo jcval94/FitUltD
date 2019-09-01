@@ -7,7 +7,7 @@
 #' @param inputNA A number to replace censored values, if is missing, only non-censored values will be evaluated.
 #' @param plot FALSE. If TRUE, a plot showing the data distribution will be given.
 #' @param p.val_min 0.05, minimum p.value for Anderson Darling and KS Test to non-reject the null hypothesis and continue with the process.
-#' @param criteria A positive integer to define which test will use. If 1, show the distributions which were non-rejected by the Anderson Darling or Kolmogorov Smirnov tests, in other cases the criteria is that they mustn't be rejected by both.
+#' @param crit A positive integer to define which test will use. If 1, show the distributions which were non-rejected by the Anderson Darling or Kolmogorov Smirnov tests, in other cases the criterion is that they mustn't be rejected by both tests.
 #' @param DPQR TRUE, creates the distribution function, density and quantile function with the names dfit, pfit and qfit.
 #'
 #' @return Calculate the distribution name with parameters, a function to reproduce random values from that distribution, a numeric vector of random numbers from that function, Anderson Darling and KS p.values, a plot showing the distribution difference between the real sample and the generated values and a list with the random deviates genetator, the distribution function, density and quantile function
@@ -26,15 +26,29 @@
 #' @importFrom stats rnorm
 #'
 #' @examples
-#' FIT1<-FDist(rnorm(1000,10),p.val_min=.03,criteria=1,plot=TRUE)
-#' #FIT1[[1]]
-#' #FIT1[[2]]()
-#' #FIT1[[4]]
-#' #FIT1[[5]]
+#' FIT1<-FDist(rnorm(1000,10),p.val_min=.03,crit=1,plot=TRUE)
+#'
+#' #Random Variable
+#' FIT1[[1]]
+#'
+#' #Random numbers generator
+#' FIT1[[2]]()
+#'
+#' #Random sample
+#' FIT1[[3]]
+#'
+#' #Goodness of fit tests results
+#' FIT1[[4]]
+#'
+#' #Plot
+#' FIT1[[5]]
+#'
+#' #Functions r, p, d, q
+#' FIT1[[6]]
 #'
 #'
 #'
-FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DPQR=T){
+FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T){
   if(missing(inputNA)){X<-na.omit(X)}
   else{X<-ifelse(is.na(X),inputNA,X)}
   if(length(X)==0){
@@ -117,6 +131,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
       return(list())
     }
     funcionales<-!purrr::map_lgl(aju,~assertthat::is.error(.x))
+    names(aju)<-c("mle","mme","mge","mlg2")
     aju<-aju[funcionales]
     return(aju)
   }
@@ -141,6 +156,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
         if (is.null(evaluar) | length(evaluar)==0 |
             c(NA) %in% evaluar$estimate | c(NaN) %in% evaluar$estimate) {next()}
         distname<-evaluar$distname
+        method<-names(aju[[comp]])[[ress]]
         dist_pfun<-try(get(paste0("p",distname)),silent = TRUE)
         dist_rfun<-try(get(paste0("r",distname)),silent = TRUE)
         if(assertthat::is.error(dist_rfun)){next()}
@@ -176,7 +192,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
           Chs<-data.frame(p.value=0)
         }
         pvvv<-p.val_min
-        if(criteria==1){
+        if(crit==1){
           crit<-AD$p.value>pvvv | KS$p.value>pvvv | Chs$p.value >pvvv
         }else{
           crit<-AD$p.value>(pvvv) & KS$p.value>(pvvv)
@@ -195,7 +211,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
           Compe<-rbind(Compe,data.frame(Dist=distname,AD_p.v=AD$p.value,KS_p.v=KS$p.value,
                                         Chs_p.v=Chs$p.value,
                                         estimate1=evaluar$estimate[1],estimate2=evaluar$estimate[2],
-                                        estimateLL1=estimate3,estimateLL2=estimate4
+                                        estimateLL1=estimate3,estimateLL2=estimate4,method=method
           ))
           }else{
           next()
@@ -255,5 +271,5 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,criteria=2,DP
               data.frame(A="Real",DT=X))
     p <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.4) +ggplot2::ggtitle(distribu)
   }
-  return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit)))
+  return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit),Compe))
 }
