@@ -54,6 +54,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   if(length(X)==0){
     return(NULL)
   }
+  X<-X[X!=(-Inf) & X!=Inf]
   if (length(unique(X))<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
     return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2),NULL))
@@ -149,8 +150,9 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     aju<-aju[purrr::map_lgl(aju,~length(.x)>0)]
     bs<-bts[[aju_ls]]
     for (comp in 1:length(aju)) {
-      if(length(aju[[comp]]==0)){next()}
+      if(length(aju)==0 ||length(aju[[comp]]==0)){next()}
       for (ress in 1:length(aju[[comp]])) {
+        print(aju[[comp]])
         num<-num+1
         if(length(aju[[comp]])!=0){evaluar<-aju[[comp]][[ress]]}
         else{evaluar<-NULL}
