@@ -23,7 +23,9 @@
 #' @importFrom ggplot2 is.ggplot
 #'
 #' @examples
-#' X<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
+#'
+#' set.seed(12345)
+#' X<-c(rnorm(273,189,12),rweibull(382,401,87),rgamma(190,40,19))
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
 #'
 #' # Functions generated
@@ -37,7 +39,7 @@
 #' x11();A_X[[4]][[2]]
 #'
 #' # More functions
-#' #A_X[[5]][[1]]()
+#' A_X[[5]][[1]]()
 #'
 #'
 FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.val_min=.05){
@@ -117,7 +119,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   Dist<-unlist(superficie[purrr::map_lgl(superficie,is.character)])
   PLTS<-superficie[purrr::map_lgl(superficie,ggplot2::is.ggplot)]
   dfss<-superficie[purrr::map_lgl(superficie,~is.data.frame(.x))]
-  PV<-do.call("rbind",dfss[map_lgl(dfss,~ncol(.x)==9)])
+  PV<-do.call("rbind",dfss[purrr::map_lgl(dfss,~ncol(.x)==9)])
   Len<-MA<-c()
   repp<-floor(n.obs/length(X))+1
   for (OBS in 1:repp) {
