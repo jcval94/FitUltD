@@ -166,7 +166,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
         if(num_param==1){
           EAD<-try(AD<-ADGofTest::ad.test(bs,dist_pfun,evaluar$estimate[1]),silent = TRUE)
           if (Cont) {KS<-try(KS<-stats::ks.test(bs,dist_pfun,evaluar$estimate[1]),silent = TRUE)}
-          else{KS<-data.frame(p.value=0)}
+          else{KS<-data.frame(p.value=NA)}
           if(assertthat::is.error(EAD) | assertthat::is.error(KS)){next()}
           if(is.na(KS$p.value)){next()}
           Chs<-data.frame(p.value=0)
@@ -179,7 +179,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
             Err_pl<-try(AD<-ADGofTest::ad.test(bs,dist_pfun,evaluar$estimate[1],,evaluar$estimate[2]),silent = TRUE)
           }
           if (Cont) {Err_pl2<-try(KS<-stats::ks.test(bs,dist_pfun,evaluar$estimate[1],evaluar$estimate[2]),silent = TRUE)}
-          else{Err_pl2<-KS<-data.frame(p.value=0)}
+          else{Err_pl2<-KS<-data.frame(p.value=NA)}
           if(assertthat::is.error(Err_pl) | assertthat::is.error(Err_pl2)){next()}
           if(is.na(Err_pl2$p.value)){next()}
           suppressWarnings(
@@ -191,10 +191,14 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
           Chs<-data.frame(p.value=0)
         }
         pvvv<-p.val_min
-        if(crit==1){
-          crit<-AD$p.value>pvvv | KS$p.value>pvvv | Chs$p.value >pvvv
+        if(all(is.na(KS$p.value))){
+          crit<-AD$p.value>pvvv
         }else{
-          crit<-AD$p.value>(pvvv) & KS$p.value>(pvvv)
+          if(crit==1){
+            crit<-AD$p.value>pvvv | KS$p.value>pvvv
+          }else{
+            crit<-AD$p.value>(pvvv) & KS$p.value>(pvvv)
+          }
         }
         if(crit){
           if(aju_ls %in% 3){
