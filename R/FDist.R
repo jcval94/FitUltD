@@ -150,9 +150,8 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     aju<-aju[purrr::map_lgl(aju,~length(.x)>0)]
     bs<-bts[[aju_ls]]
     for (comp in 1:length(aju)) {
-      if(length(aju)==0 ||length(aju[[comp]]==0)){next()}
+      if(length(aju)==0 ||length(aju[[comp]])==0){next()}
       for (ress in 1:length(aju[[comp]])) {
-        print(aju[[comp]])
         num<-num+1
         if(length(aju[[comp]])!=0){evaluar<-aju[[comp]][[ress]]}
         else{evaluar<-NULL}
