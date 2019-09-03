@@ -46,7 +46,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
     return(NULL)}}
   desc<-function(X,fns=FALSE,ref.=ref,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
     eval<-function(X,fns.=fns,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
-      FIT<-FDist(X,length(X),criteria = crt,plot = subplot,p.val_min=p.val_min)
+      FIT<-FDist(X,length(X),crit = crt,plot = subplot,p.val_min=p.val_min)
       FIT
     }
     div<-function(X,ref.=ref){
