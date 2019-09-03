@@ -59,9 +59,6 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     fun_g<-function(n=gen){return(rep(X[1],n))}
     return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2),NULL))
   }
-  if(prod(X==floor(X))==1){
-    Cont<-FALSE
-  }
   if (length(unique(X))==2) {
     X<-sort(X)
     p<-length(X[X==unique(X)[2]])/length(X)
