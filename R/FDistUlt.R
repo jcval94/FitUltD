@@ -43,7 +43,7 @@
 FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.val_min=.05){
   if(!is.numeric(ref)){}else{
     if(ref>length(X)/3){warning("Number of clusters must be less than input length/3")
-    return(NULL)}}
+      return(NULL)}}
   desc<-function(X,fns=FALSE,ref.=ref,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
     eval<-function(X,fns.=fns,crt.=crt,subplot.=subplot,p.val_min.=p.val_min){
       FIT<-FDist(X,length(X),crit = crt,plot = subplot,p.val_min=p.val_min)
@@ -56,6 +56,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         if(all(Enteros)){
           if(!is.numeric(ref)){
             mod1<-mclust::Mclust(X)$classification
+            print(table(mod1))
             if(length(table(mod1))==1){
               df$CL<-kmeans(df,2)$cluster
             }else{
@@ -67,7 +68,6 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         }else{
           df$CL<-ifelse(Enteros,1,2)
         }
-
       }else{
         if(!is.numeric(ref)){
           mod1<-mclust::Mclust(X)$classification
@@ -96,7 +96,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         formals(FN)[3]<-ifelse(length(X)==1,0,sd(X))
         return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),
                     data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,PV_S=2)
-                    ))
+        ))
       }
     }else{
       return(EV)
@@ -117,7 +117,8 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   Global_FUN<-superficie[purrr::map_lgl(superficie,~"gl_fun" %in% class(.x))]
   Dist<-unlist(superficie[purrr::map_lgl(superficie,is.character)])
   PLTS<-superficie[purrr::map_lgl(superficie,ggplot2::is.ggplot)]
-  PV<-do.call("rbind",superficie[purrr::map_lgl(superficie,is.data.frame)])
+  dfss<-superficie[purrr::map_lgl(superficie,~is.data.frame(.x))]
+  PV<-do.call("rbind",dfss[map_lgl(dfss,~ncol(.x)==9)])
   Len<-MA<-c()
   repp<-floor(n.obs/length(X))+1
   for (OBS in 1:repp) {
