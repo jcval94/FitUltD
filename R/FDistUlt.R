@@ -56,7 +56,6 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         if(all(Enteros)){
           if(!is.numeric(ref)){
             mod1<-mclust::Mclust(X)$classification
-            print(table(mod1))
             if(length(table(mod1))==1){
               df$CL<-kmeans(df,2)$cluster
             }else{
