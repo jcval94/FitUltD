@@ -26,6 +26,7 @@
 #' @importFrom stats rnorm
 #'
 #' @examples
+#' set.seed(31109)
 #' FIT1<-FDist(rnorm(1000,10),p.val_min=.03,crit=1,plot=TRUE)
 #'
 #' #Random Variable
@@ -62,7 +63,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   if (length(unique(X))==2) {
     X<-sort(X)
     p<-length(X[X==unique(X)[2]])/length(X)
-    gene<-rbinom
+    gene<-stats::rbinom
     formals(gene)[1]<-length(X)
     formals(gene)[2]<-1
     formals(gene)[3]<-p
@@ -150,8 +151,8 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
       if(length(aju)==0 ||length(aju[[comp]])==0){next()}
       for (ress in 1:length(aju[[comp]])) {
         num<-num+1
-        if(length(aju[[comp]])!=0){evaluar<-aju[[comp]][[ress]]}
-        else{evaluar<-NULL}
+        if(length(aju[[comp]])!=0){evaluar<-aju[[comp]][[ress]]
+        }else{evaluar<-NULL}
         if (is.null(evaluar) | length(evaluar)==0 |
             c(NA) %in% evaluar$estimate | c(NaN) %in% evaluar$estimate) {next()}
         distname<-evaluar$distname
@@ -165,9 +166,9 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
         evaluar$estimate<-evaluar$estimate[names(evaluar$estimate) %in% argumentos]
         if(num_param==1){
           EAD<-try(AD<-ADGofTest::ad.test(bs,dist_pfun,evaluar$estimate[1]),silent = TRUE)
-          if (Cont) {KS<-try(KS<-stats::ks.test(bs,dist_pfun,evaluar$estimate[1]),silent = TRUE)}
-          else{KS<-data.frame(p.value=NA)}
-          if(assertthat::is.error(EAD) | assertthat::is.error(KS)){next()}
+          KS<-try(stats::ks.test(bs,dist_pfun,evaluar$estimate[1]),silent = TRUE)
+          if(assertthat::is.error(KS)){KS<-data.frame(p.value=NA)}
+          if(assertthat::is.error(EAD)){next()}
           if(is.na(KS$p.value)){next()}
           Chs<-data.frame(p.value=0)
         }
@@ -178,10 +179,10 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
           if (assertthat::is.error(Err_pl)) {
             Err_pl<-try(AD<-ADGofTest::ad.test(bs,dist_pfun,evaluar$estimate[1],,evaluar$estimate[2]),silent = TRUE)
           }
-          if (Cont) {Err_pl2<-try(KS<-stats::ks.test(bs,dist_pfun,evaluar$estimate[1],evaluar$estimate[2]),silent = TRUE)}
-          else{Err_pl2<-KS<-data.frame(p.value=NA)}
-          if(assertthat::is.error(Err_pl) | assertthat::is.error(Err_pl2)){next()}
-          if(is.na(Err_pl2$p.value)){next()}
+          KS<-try(stats::ks.test(bs,dist_pfun,evaluar$estimate[1],evaluar$estimate[2]),silent = TRUE)
+          if(assertthat::is.error(KS)){KS<-data.frame(p.value=NA)}
+          if(assertthat::is.error(Err_pl)){next()}
+          if(is.na(KS$p.value)){next()}
           suppressWarnings(
             EE_Chs<-try(dst_chsq<-dist_rfun(length(bs),evaluar$estimate[1],evaluar$estimate[2]))
           )

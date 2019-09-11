@@ -1,4 +1,4 @@
-#' Fit to a mixed univariate distribution
+#' Fits a set of observations (random variable) to test whether is drawn from a certain distribution
 #'
 #' @param X A random sample to be fitted.
 #' @param n.obs A positive integer, is the length of the random sample to be generated
@@ -24,19 +24,25 @@
 #'
 #' @examples
 #'
-#' set.seed(12345)
-#' X<-c(rnorm(273,189,12),rweibull(382,401,87),rgamma(190,40,19))
+#' set.seed(31109)
+#' X<-c(rnorm(273,189,12),rweibull(382,401,87),rgamma(490,40,19))
+#'
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
+#'
+#' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE,p.val_min=.005)
 #'
 #' # Functions generated
 #' A_X[[1]][[1]]()
 #' # Random sample
 #' A_X[[2]]
 #'
+#' #Distributions
+#' A_X[[3]]
 #'
 #' # Plots
-#' x11();A_X[[4]][[1]]
-#' x11();A_X[[4]][[2]]
+#' par(mfrow=c(1,2))
+#' A_X[[4]][[1]]
+#' A_X[[4]][[2]]
 #'
 #' # More functions
 #' A_X[[5]][[1]]()
