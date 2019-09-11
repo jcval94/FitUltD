@@ -25,7 +25,7 @@
 #' @examples
 #'
 #' set.seed(31109)
-#' X<-c(rnorm(273,189,12),rweibull(382,401,87),rgamma(490,40,19))
+#' X<-c(rnorm(193,189,12),rweibull(182,401,87),rgamma(190,40,19))
 #'
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
 #'
