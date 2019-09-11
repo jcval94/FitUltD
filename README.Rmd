@@ -54,7 +54,7 @@ You can also embed plots, for example:
 FIT1[[4]][[1]]
 ```
 
-```{r plots mult, echo = FALSE}
+```{r plots-mult, echo = FALSE}
 FIT1[[4]][[2]]
 ```
 
