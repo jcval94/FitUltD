@@ -29,10 +29,8 @@ library(FitUltD)
 #> Type 'citation("mclust")' for citing this R package in publications.
 #random Variable
 RV<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
-
+set.seed(31109)
 FIT1<-FDistUlt(RV, plot=TRUE, subplot = TRUE)
-#> <simpleError in optim(par = vstart, fn = fnobj, fix.arg = fix.arg, obs = data,     gr = gradient, ddistnam = ddistname, hessian = TRUE, method = meth,     lower = lower, upper = upper, ...): non-finite finite-difference value [2]>
-#> <simpleError in optim(par = vstart, fn = fnobj, fix.arg = fix.arg, obs = data,     gr = gradient, pdistnam = pdistname, hessian = TRUE, method = meth,     lower = lower, upper = upper, ...): non-finite finite-difference value [2]>
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`?
@@ -40,11 +38,14 @@ You can include R chunks like so:
 
 ``` r
 FIT1[[3]]
-#>                    Distribucion  Prop_dist    AD_p.v    KS_p.v Chs_p.v
-#> AD6         lnorm(5.242, 0.052) 0.29795918 0.8372311 0.8985857       0
-#> AD8    weibull(434.484, 86.552) 0.09387755 0.8861584 0.7938189       0
-#> AD2  gamma(497882.65, 5721.237) 0.24081633 0.7523182 0.7705192       0
-#> AD61        lnorm(0.722, 0.162) 0.36734694 0.9807500 0.9616154       0
+#>                  Distribution Dist_Prop    Dist    AD_p.v    KS_p.v
+#> AD8  weibull(18.969, 195.426) 0.2979592 weibull 0.8569332 0.9557278
+#> AD81   weibull(454.9, 87.023) 0.3346939 weibull 0.9415304 0.9616317
+#> AD6       lnorm(0.741, 0.145) 0.3673469   lnorm 0.9540176 0.8587172
+#>        estimate1   estimate2 estimateLL1 estimateLL2 method     PV_S
+#> AD8   18.9686456 195.4260896           0           1    mge 1.812661
+#> AD81 454.8996478  87.0229602           0           1    mge 1.903162
+#> AD6    0.7408106   0.1446825           0           1    mge 1.812735
 ```
 
 You’ll still need to render `README.Rmd` regularly, to keep `README.md`
