@@ -50,21 +50,24 @@
 #'
 #'
 FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=TRUE){
+  uX<-unique(X)
+  luX<-length(uX)
+  lX<-length(X)
   if(missing(inputNA)){X<-na.omit(X)}
   else{X<-ifelse(is.na(X),inputNA,X)}
-  if(length(X)==0){
+  if(lX==0){
     return(NULL)
   }
   X<-X[X!=(-Inf) & X!=Inf]
-  if (length(unique(X))<2) {
+  if (luX<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
-    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2),NULL))
+    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen),NULL))
   }
-  if (length(unique(X))==2) {
+  if (luX==2) {
     X<-sort(X)
-    p<-length(X[X==unique(X)[2]])/length(X)
+    p<-length(X[X==uX[2]])/lX
     gene<-stats::rbinom
-    formals(gene)[1]<-length(X)
+    formals(gene)[1]<-lX
     formals(gene)[2]<-1
     formals(gene)[3]<-p
     distribu<-paste0("binom(",p,")")
@@ -76,7 +79,10 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     }else{
       pl<-NULL
     }
-    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2),pl))
+    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen),pl))
+  }
+  if(lX!=luX & Cont){
+    X<-jitter(X,amount = 1)
   }
   DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy","binom"),
             p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy,stats::pbinom),
@@ -98,7 +104,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   escala<-1
   eps<-1E-15
   if (sum(X<0)>0){
-    if (sum(X<0)/length(X)<0.03){
+    if (sum(X<0)/lX<0.03){
       bt<-ifelse(X<0,eps,X)
       b_0<-bt
     }else{
@@ -229,6 +235,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     return(NULL)
   }
   Compe$PV_S<-rowSums(Compe[,2:4])
+  Compe<-cbind(Compe,data.frame(Obs=gen))
   WNR<-Compe[Compe$PV_S %in% max(Compe$PV_S),][1,]
   distW<-WNR$Dist
   paramsW<-WNR[1,names(Compe)[startsWith(names(Compe),"estim")]]
@@ -275,5 +282,5 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
               data.frame(A="Real",DT=X))
     p <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.4) +ggplot2::ggtitle(distribu)
   }
-  return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit),Compe))
+  return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit),Compe[,-4]))
 }
