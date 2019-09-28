@@ -24,7 +24,7 @@
 #'
 #' @examples
 #'
-#' set.seed(31109)
+#' set.seed(3110934)
 #' X<-c(rnorm(193,189,12),rweibull(182,401,87),rgamma(190,40,19))
 #'
 #' A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
@@ -93,7 +93,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
     }
     suppressWarnings(EV<-eval(X,fns))
     if(is.null(EV)){
-      if(length(X)>40){
+      if(length(X)>50){
         DV<-purrr::map(div(X),~desc(.x,fns))
         return(DV)
       }else{
@@ -102,7 +102,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         formals(FN)[2]<-mean(X)
         formals(FN)[3]<-ifelse(length(X)==1,0,sd(X))
         return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),
-                    data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,PV_S=2)
+                    data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,PV_S=2,Obs=length(X))
         ))
       }
     }else{
@@ -125,7 +125,7 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   Dist<-unlist(superficie[purrr::map_lgl(superficie,is.character)])
   PLTS<-superficie[purrr::map_lgl(superficie,ggplot2::is.ggplot)]
   dfss<-superficie[purrr::map_lgl(superficie,~is.data.frame(.x))]
-  PV<-do.call("rbind",dfss[purrr::map_lgl(dfss,~ncol(.x)==9)])
+  PV<-do.call("rbind",dfss[purrr::map_lgl(dfss,~ncol(.x)==10)])
   Len<-MA<-c()
   repp<-floor(n.obs/length(X))+1
   for (OBS in 1:repp) {
