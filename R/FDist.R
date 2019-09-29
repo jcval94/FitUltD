@@ -282,5 +282,6 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
               data.frame(A="Real",DT=X))
     p <- ggplot2::ggplot(DF,ggplot2::aes(x=DF$DT,fill=DF$A)) + ggplot2::geom_density(alpha=0.4) +ggplot2::ggtitle(distribu)
   }
+  class(WNR)<-c(class(WNR),"data.frame.wnr")
   return(list(distribu,generadora_r,MA,WNR[,-4],p,list(rfit,pfit,dfit,qfit),Compe[,-4]))
 }

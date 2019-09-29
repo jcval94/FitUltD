@@ -8,7 +8,7 @@
 #' @param subplot FALSE. If TRUE, generates the plot of the mixed density function's partitions.
 #' @param p.val_min Minimum p.value to be given to non-reject the null hypothesis.
 #'
-#' @return A list with the density functions, a random sample, a  data frame with the KS and AD p.values results, the corresponding plots an the random numbers generator functions
+#' @return A list with the density functions, a random sample, a  data frame with the KS and AD p.values results, the corresponding plots, random numbers generator functions and a table with all other possible distributions
 #' @export
 #'
 #' @importFrom purrr map
@@ -124,7 +124,8 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
   Global_FUN<-superficie[purrr::map_lgl(superficie,~"gl_fun" %in% class(.x))]
   Dist<-unlist(superficie[purrr::map_lgl(superficie,is.character)])
   PLTS<-superficie[purrr::map_lgl(superficie,ggplot2::is.ggplot)]
-  dfss<-superficie[purrr::map_lgl(superficie,~is.data.frame(.x))]
+  dfss<-superficie[purrr::map_lgl(superficie,~"data.frame.wnr" %in% class(.x))]
+  dfss_all<-superficie[purrr::map_lgl(superficie,~is.data.frame(.x) & !"data.frame.wnr" %in% class(.x))]
   PV<-do.call("rbind",dfss[purrr::map_lgl(dfss,~ncol(.x)==10)])
   Len<-MA<-c()
   repp<-floor(n.obs/length(X))+1
@@ -153,5 +154,5 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
     cp<-cowplot::plot_grid(plotlist = PLTS, ncol = floor(sqrt(length(PLTS))))
   }
   TPlts<-list(plt,cp)
-  return(list(unlist(FUN),MA,p.v,TPlts,Global_FUN))
+  return(list(unlist(FUN),MA,p.v,TPlts,Global_FUN,dfss_all))
 }
