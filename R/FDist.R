@@ -61,7 +61,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   X<-X[X!=(-Inf) & X!=Inf]
   if (luX<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
-    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen),NULL))
+    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),NULL))
   }
   if (luX==2) {
     X<-sort(X)
@@ -79,18 +79,18 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     }else{
       pl<-NULL
     }
-    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen),pl))
+    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),pl))
   }
   if(lX!=luX & Cont){
-    X<-jitter(X,amount = 1)
+    X<-jitter(X,amount = 1/100)
   }
-  DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy","binom"),
-            p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy,stats::pbinom),
-            d=c(stats::dexp,stats::dpois,stats::dbeta,stats::dgamma,stats::dlnorm,stats::dnorm,stats::dweibull,stats::dnbinom,stats::dhyper,stats::dcauchy,stats::dbinom),
-            q=c(stats::qexp,stats::qpois,stats::qbeta,stats::qgamma,stats::qlnorm,stats::qnorm,stats::qweibull,stats::qnbinom,stats::qhyper,stats::qcauchy,stats::qbinom),
-            r=c(stats::rexp,stats::rpois,stats::rbeta,stats::rgamma,stats::rlnorm,stats::rnorm,stats::rweibull,stats::rnbinom,stats::rhyper,stats::rcauchy,stats::rbinom),
-            d_c=c(1,0,1,1,1,1,1,0,0,1,0),
-            indicadora=c("0","0","01","0","0","R","0","0","0","R","0")
+  DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy","binom","unif","t"),
+            p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy,stats::pbinom,stats::punif,stats::pt),
+            d=c(stats::dexp,stats::dpois,stats::dbeta,stats::dgamma,stats::dlnorm,stats::dnorm,stats::dweibull,stats::dnbinom,stats::dhyper,stats::dcauchy,stats::dbinom,stats::dunif,stats::dt),
+            q=c(stats::qexp,stats::qpois,stats::qbeta,stats::qgamma,stats::qlnorm,stats::qnorm,stats::qweibull,stats::qnbinom,stats::qhyper,stats::qcauchy,stats::qbinom,stats::qunif,stats::qt),
+            r=c(stats::rexp,stats::rpois,stats::rbeta,stats::rgamma,stats::rlnorm,stats::rnorm,stats::rweibull,stats::rnbinom,stats::rhyper,stats::rcauchy,stats::rbinom,stats::runif,stats::rt),
+            d_c=c(1,0,1,1,1,1,1,0,0,1,0,1,1),
+            indicadora=c("0","0","01","0","0","R","0","0","0","R","0","R","R")
   )
   DIS<-purrr::map(DIS,~subset(.x, DIS$d_c==as.numeric(Cont)))
   DIS_0<-purrr::map(DIS,~subset(.x, DIS$indicadora=="0"))
@@ -235,7 +235,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     return(NULL)
   }
   Compe$PV_S<-rowSums(Compe[,2:4])
-  Compe<-cbind(Compe,data.frame(Obs=gen))
+  Compe<-cbind(Compe,data.frame(Obs=gen,Lim_inf=min(X),Lim_sup=max(X)))
   WNR<-Compe[Compe$PV_S %in% max(Compe$PV_S),][1,]
   distW<-WNR$Dist
   paramsW<-WNR[1,names(Compe)[startsWith(names(Compe),"estim")]]
