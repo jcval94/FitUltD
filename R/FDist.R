@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' set.seed(31109)
-#' FIT1<-FDist(rnorm(1000,10),p.val_min=.03,crit=1,plot=TRUE)
+#' FIT1<-FDist(rnorm(1000,10),gen=100,p.val_min=.03,crit=1,plot=TRUE)
 #'
 #' #Random Variable
 #' FIT1[[1]]
@@ -46,7 +46,6 @@
 #'
 #' #Functions r, p, d, q
 #' FIT1[[6]]
-#'
 #'
 #'
 FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=TRUE){
@@ -84,11 +83,17 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   if(lX!=luX & Cont){
     X<-jitter(X,amount = 1/100)
   }
-  DIS<-list(Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy","binom","unif","t"),
-            p=c(stats::pexp,stats::ppois,stats::pbeta,stats::pgamma,stats::plnorm,stats::pnorm,stats::pweibull,stats::pnbinom,stats::phyper,stats::pcauchy,stats::pbinom,stats::punif,stats::pt),
-            d=c(stats::dexp,stats::dpois,stats::dbeta,stats::dgamma,stats::dlnorm,stats::dnorm,stats::dweibull,stats::dnbinom,stats::dhyper,stats::dcauchy,stats::dbinom,stats::dunif,stats::dt),
-            q=c(stats::qexp,stats::qpois,stats::qbeta,stats::qgamma,stats::qlnorm,stats::qnorm,stats::qweibull,stats::qnbinom,stats::qhyper,stats::qcauchy,stats::qbinom,stats::qunif,stats::qt),
-            r=c(stats::rexp,stats::rpois,stats::rbeta,stats::rgamma,stats::rlnorm,stats::rnorm,stats::rweibull,stats::rnbinom,stats::rhyper,stats::rcauchy,stats::rbinom,stats::runif,stats::rt),
+  if(!exists("Nombres")){
+    Nombres=c("exp","pois","beta","gamma","lnorm","norm","weibull","nbinom","hyper","cauchy","binom","unif","t")
+  }
+  lnbs<-length(Nombres);lnb<-(1:lnbs)
+  comb<-expand.grid(c("p","d","q","r"),Nombres);comb<-comb[order(comb[[1]]),]
+  func<-purrr::map2(as.character(comb[[2]]),as.character(comb[[1]]),~get(paste0(.y,.x)))
+  DIS<-list(Nombres=Nombres,
+            p=func[lnb],
+            d=func[lnb+lnbs],
+            q=func[lnb+lnbs*2],
+            r=func[lnb+lnbs*3],
             d_c=c(1,0,1,1,1,1,1,0,0,1,0,1,1),
             indicadora=c("0","0","01","0","0","R","0","0","0","R","0","R","R")
   )
