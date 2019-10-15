@@ -60,7 +60,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
   X<-X[X!=(-Inf) & X!=Inf]
   if (luX<2) {
     fun_g<-function(n=gen){return(rep(X[1],n))}
-    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),NULL))
+    return(list(paste0("norm(",X[1],",0)"),fun_g,rep(X[1],gen),data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=X[1],estimate2=0,estimateLL1=0,estimateLL2=1,method="assumption",PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),NULL))
   }
   if (luX==2) {
     X<-sort(X)
@@ -78,7 +78,7 @@ FDist<-function(X,gen=1,Cont=TRUE,inputNA,plot=FALSE,p.val_min=.05,crit=2,DPQR=T
     }else{
       pl<-NULL
     }
-    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),pl))
+    return(list(distribu,gene,MA[1:gen],data.frame(Dist="binom",AD_p.v=1,KS_p.v=1,estimate1=1,estimate2=p,estimateLL1=0,estimateLL2=1,method="assumption",PV_S=2,Obs=gen,Lim_inf=min(X),Lim_sup=max(X)),pl))
   }
   if(lX!=luX & Cont){
     X<-jitter(X,amount = 1/100)
