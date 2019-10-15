@@ -101,9 +101,9 @@ FDistUlt<-function(X,n.obs=length(X),ref="OP",crt=1,plot=FALSE,subplot=FALSE,p.v
         formals(FN)[1]<-length(X)
         formals(FN)[2]<-mean(X)
         formals(FN)[3]<-ifelse(length(X)==1,0,sd(X))
-        return(list(paste0("normal(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),
-                    data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,PV_S=2,Obs=length(X),Lim_inf=min(X),Lim_sup=max(X))
-        ))
+        dfw<-data.frame(Dist="norm",AD_p.v=1,KS_p.v=1,estimate1=mean(X),estimate2=sd(X),estimateLL1=0,estimateLL2=1,method="asumption",PV_S=2,Obs=length(X),Lim_inf=min(X),Lim_sup=max(X))
+        class(dfw)<-c(class(dfw),"data.frame.wnr")
+        return(list(paste0("norm(",mean(X),",",ifelse(length(X)==1,0,sd(X)),")"),FN,FN(),dfw))
       }
     }else{
       return(EV)
