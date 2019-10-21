@@ -23,15 +23,15 @@ FDistUlt(X, n.obs = length(X), ref = "OP", crt = 1, plot = FALSE,
 \item{p.val_min}{Minimum p.value to be given to non-reject the null hypothesis.}
 }
 \value{
-A list with the density functions, a random sample, a  data frame with the KS and AD p.values results, the corresponding plots an the random numbers generator functions
+A list with the density functions, a random sample, a  data frame with the KS and AD p.values results, the corresponding plots, random numbers generator functions and a table with all other possible distributions
 }
 \description{
 Fits a set of observations (random variable) to test whether is drawn from a certain distribution
 }
 \examples{
 
-set.seed(31109)
-X<-c(rnorm(193,189,12),rweibull(182,401,87),rgamma(190,40,19))
+set.seed(3110934)
+X<-c(rnorm(493,189,12),rweibull(182,401,87),rgamma(190,40,19))
 
 A_X<-FDistUlt(X,plot=TRUE,subplot=TRUE)
 

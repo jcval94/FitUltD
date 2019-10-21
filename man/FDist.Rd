@@ -32,7 +32,7 @@ Fit of univariate distributions with censored data ignored by default or can be 
 }
 \examples{
 set.seed(31109)
-FIT1<-FDist(rnorm(1000,10),p.val_min=.03,crit=1,plot=TRUE)
+FIT1<-FDist(rnorm(1000,10),gen=100,p.val_min=.03,crit=1,plot=TRUE)
 
 #Random Variable
 FIT1[[1]]
@@ -51,7 +51,6 @@ FIT1[[5]]
 
 #Functions r, p, d, q
 FIT1[[6]]
-
 
 
 }
