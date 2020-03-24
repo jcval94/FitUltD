@@ -32,9 +32,9 @@ This is a basic example which shows you how to fit a multimodal random variable:
 
 ```{r example}
 library(FitUltD)
-#random Variable
+#Random Variable
 RV <- c(rnorm(73,189,12), rweibull(82,401,87), rgamma(90,40,19))
-set.seed(31109)
+set.seed(311093)
 FIT1 <- FDistUlt(RV, plot = TRUE, subplot = TRUE)
 
 ```
