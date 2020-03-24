@@ -28,13 +28,17 @@ install.packages("FitUltD")
 
 ## Example
 
-This is a basic example which shows you how to fit a multimodal random variable:
+This is a basic example which shows you how to fit a multimodal random variable choosing your own distributions:
 
 ```{r example}
 library(FitUltD)
 #Random Variable
+set.seed(3110)
+
 RV <- c(rnorm(73,189,12), rweibull(82,401,87), rgamma(90,40,19))
-set.seed(311093)
+
+Nombres <- c("norm","weibull","gamma","exp","cauchy")
+
 FIT1 <- FDistUlt(RV, plot = TRUE, subplot = TRUE)
 
 ```
