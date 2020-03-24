@@ -33,26 +33,28 @@ This is a basic example which shows you how to fit a multimodal random variable:
 ```{r example}
 library(FitUltD)
 #random Variable
-RV<-c(rnorm(73,189,12),rweibull(82,401,87),rgamma(90,40,19))
+RV <- c(rnorm(73,189,12), rweibull(82,401,87), rgamma(90,40,19))
 set.seed(31109)
-FIT1<-FDistUlt(RV, plot=TRUE, subplot = TRUE)
+FIT1 <- FDistUlt(RV, plot = TRUE, subplot = TRUE)
 
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+One of the available options is to show the distribution functions that passed the Anderson Darling and Kolmogorov Smirnov tests, as well as their p-value and the proportion of the total distribution.
 
 ```{r cars}
 FIT1[[3]]
 
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+By setting `plot` and `subplot` arguments as `TRUE`, is possible to visualizate each distribution which forms the most accurrate model.
 
-You can also embed plots, for example:
+Real data distribution versus fitted model.
 
 ```{r pressure, echo = FALSE}
 FIT1[[4]][[1]]
 ```
+
+Distributions that forms the fitted model.
 
 ```{r plots-mult, echo = FALSE}
 FIT1[[4]][[2]]
